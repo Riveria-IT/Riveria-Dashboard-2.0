@@ -4,6 +4,7 @@ from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, urljoin
 from urllib.request import Request, urlopen
 from pathlib import Path
+from email.utils import formatdate
 import base64, hashlib, hmac, ipaddress, json, os, re, secrets, socket, sqlite3, ssl, subprocess, time
 
 ROOT = Path(__file__).resolve().parent
@@ -179,10 +180,11 @@ class Handler(SimpleHTTPRequestHandler):
         if p=="/api/login":
             with db() as con: u=con.execute("SELECT * FROM users WHERE lower(username)=lower(?) AND active=1",(str(data.get("username","")),)).fetchone()
             if not u or not password_ok(str(data.get("password","")),u["password_hash"]): return self.send_json({"error":"Benutzername oder Passwort ist falsch."},401)
-            token=secrets.token_urlsafe(40); now=int(time.time()); days=365 if data.get("remember",True) else 1
+            token=secrets.token_urlsafe(40); now=int(time.time()); days=3650
             with db() as con:
                 con.execute("DELETE FROM sessions WHERE expires_at<?",(now,)); con.execute("INSERT INTO sessions VALUES(?,?,?,?)",(hashlib.sha256(token.encode()).hexdigest(),u["id"],now+days*86400,now))
-            cookie=f"dashboard_session={token}; Path=/; HttpOnly; SameSite=Strict; Max-Age={days*86400}"
+            expires=formatdate(now+days*86400,usegmt=True)
+            cookie=f"dashboard_session={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age={days*86400}; Expires={expires}"
             return self.send_json({"ok":True},headers={"Set-Cookie":cookie})
         if p=="/api/logout":
             token=self.cookies().get("dashboard_session","")

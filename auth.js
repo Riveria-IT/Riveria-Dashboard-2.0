@@ -86,7 +86,7 @@
         event.preventDefault(); loginError.textContent = '';
         const form = new FormData(loginForm);
         try {
-            await api('/login', { method: 'POST', body: JSON.stringify({ username: form.get('username'), password: form.get('password'), remember: form.get('remember') === 'on' }) });
+            await api('/login', { method: 'POST', body: JSON.stringify({ username: form.get('username'), password: form.get('password') }) });
             location.reload();
         } catch (error) { loginError.textContent = error.message; }
     });
