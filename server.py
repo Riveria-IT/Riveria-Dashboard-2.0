@@ -228,7 +228,7 @@ class Handler(SimpleHTTPRequestHandler):
         if p=="/api/dashboard":
             if not isinstance(data,dict) or not isinstance(data.get("widgets"),list):return self.send_json({"error":"Ungültiges Dashboard"},400)
             raw=json.dumps(data,ensure_ascii=False)
-            if len(raw)>6000000:return self.send_json({"error":"Dashboard ist zu gross"},413)
+            if len(raw)>20*1024*1024:return self.send_json({"error":"Dashboard ist zu gross (maximal 20 MB)"},413)
             with db() as con: con.execute("INSERT INTO dashboards(user_id,data,updated_at) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data,updated_at=excluded.updated_at",(u["id"],raw,int(time.time())))
             return self.send_json({"ok":True})
         return self.send_json({"error":"Nicht gefunden"},404)

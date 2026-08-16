@@ -400,7 +400,7 @@ class UIManager {
         document.querySelectorAll('[data-theme]').forEach(button => button.addEventListener('click', async () => { window.dashboardApp.settings.theme = button.dataset.theme; await window.dashboardApp.saveSettings(); }));
         document.getElementById('setting-background-file').addEventListener('change', event => {
             const file = event.target.files[0]; if (!file) return;
-            if (!['image/jpeg','image/png','image/webp'].includes(file.type) || file.size > 1500 * 1024) { alert('Bitte PNG, JPG oder WebP bis maximal 1,5 MB auswählen.'); event.target.value=''; return; }
+            if (!['image/jpeg','image/png','image/webp'].includes(file.type) || file.size > 10 * 1024 * 1024) { alert('Bitte PNG, JPG oder WebP bis maximal 10 MB auswählen.'); event.target.value=''; return; }
             const reader = new FileReader(); reader.onload = async () => { window.dashboardApp.settings.backgroundData = reader.result; await window.dashboardApp.saveSettings(); }; reader.readAsDataURL(file);
         });
         document.getElementById('btn-reset-background').addEventListener('click', async () => { window.dashboardApp.settings.backgroundData = ''; document.getElementById('setting-background-file').value=''; await window.dashboardApp.saveSettings(); });
