@@ -1,0 +1,11 @@
+# Lokale Daten und Zugangsdaten niemals veröffentlichen
+dashboard.db
+dashboard.db.*
+*.db
+*.db-*
+.env
+
+# Python und lokale Archive
+__pycache__/
+*.py[cod]
+Home_Dashboard.zip

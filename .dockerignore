@@ -1,0 +1,13 @@
+.git
+.github
+.gitignore
+dashboard.db
+dashboard.db.*
+*.db
+*.db-*
+.env
+__pycache__
+*.py[cod]
+Home_Dashboard.zip
+install.sh
+README.md

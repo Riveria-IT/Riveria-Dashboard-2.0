@@ -1,0 +1,25 @@
+services:
+  luma-dashboard:
+    image: ${DASHBOARD_IMAGE:-ghcr.io/riveria-it/riveria-dashboard-2.0:latest}
+    container_name: luma-dashboard
+    restart: unless-stopped
+    environment:
+      DASHBOARD_HOST: "0.0.0.0"
+      DASHBOARD_PORT: "8080"
+      DASHBOARD_DB: "/data/dashboard.db"
+      DASHBOARD_ADMIN_USERNAME: "${DASHBOARD_ADMIN_USERNAME:-admin}"
+      DASHBOARD_ADMIN_PASSWORD: "${DASHBOARD_ADMIN_PASSWORD:?Bitte in Portainer setzen}"
+      TZ: "${TZ:-Europe/Berlin}"
+    ports:
+      - "${DASHBOARD_HTTP_PORT:-8080}:8080"
+    volumes:
+      - luma-dashboard-data:/data
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/me', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  luma-dashboard-data:
