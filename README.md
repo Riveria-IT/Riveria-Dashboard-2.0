@@ -57,14 +57,6 @@ Im Abschnitt **Environment variables** mindestens diese Werte hinzufügen:
 | `DASHBOARD_ADMIN_USERNAME` | `admin` | Benutzername des ersten Administrators |
 | `DASHBOARD_ADMIN_PASSWORD` | `Ein-langes-sicheres-Passwort` | Passwort des ersten Administrators |
 
-Optional können folgende Werte gesetzt werden:
-
-| Name | Standardwert | Bedeutung |
-| --- | --- | --- |
-| `DASHBOARD_HTTP_PORT` | `8080` | Port, unter dem das Dashboard erreichbar ist |
-| `TZ` | `Europe/Berlin` | Zeitzone des Containers |
-| `DASHBOARD_IMAGE` | `ghcr.io/riveria-it/riveria-dashboard-2.0:latest` | Zu verwendendes Container-Image |
-
 Das Admin-Passwort nicht in die `compose.yml` schreiben und nicht auf GitHub veröffentlichen. Die Admin-Variablen werden nur beim Erstellen einer neuen, leeren Datenbank verwendet. Bei späteren Updates bleiben bestehende Benutzer und Passwörter unverändert.
 
 ### Schritt 4: Stack starten
@@ -76,8 +68,6 @@ Das Admin-Passwort nicht in die `compose.yml` schreiben und nicht auf GitHub ver
 ```text
 http://IP-DES-DOCKER-SERVERS:8080
 ```
-
-Wurde `DASHBOARD_HTTP_PORT` geändert, muss statt `8080` der dort eingetragene Port verwendet werden.
 
 ### Schritt 5: Erster Login
 
@@ -137,13 +127,7 @@ In Portainer unter den Stack-Umgebungsvariablen einen Wert für `DASHBOARD_ADMIN
 
 ### Port `8080` wird bereits verwendet
 
-In Portainer beispielsweise folgende Variable ergänzen:
-
-```text
-DASHBOARD_HTTP_PORT=8081
-```
-
-Das Dashboard ist danach unter `http://IP-DES-SERVERS:8081` erreichbar.
+In der `compose.yml` den linken Port in `"8080:8080"` ändern, beispielsweise auf `"8081:8080"`. Das Dashboard ist danach unter `http://IP-DES-SERVERS:8081` erreichbar.
 
 ### Login-Daten funktionieren nach einem Update nicht
 

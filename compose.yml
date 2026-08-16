@@ -1,17 +1,17 @@
 services:
   luma-dashboard:
-    image: ${DASHBOARD_IMAGE:-ghcr.io/riveria-it/riveria-dashboard-2.0:latest}
+    image: ghcr.io/riveria-it/riveria-dashboard-2.0:latest
     container_name: luma-dashboard
     restart: unless-stopped
     environment:
       DASHBOARD_HOST: "0.0.0.0"
       DASHBOARD_PORT: "8080"
       DASHBOARD_DB: "/data/dashboard.db"
-      DASHBOARD_ADMIN_USERNAME: "${DASHBOARD_ADMIN_USERNAME:-admin}"
-      DASHBOARD_ADMIN_PASSWORD: "${DASHBOARD_ADMIN_PASSWORD:?Bitte in Portainer setzen}"
-      TZ: "${TZ:-Europe/Berlin}"
+      DASHBOARD_ADMIN_USERNAME: "${DASHBOARD_ADMIN_USERNAME}"
+      DASHBOARD_ADMIN_PASSWORD: "${DASHBOARD_ADMIN_PASSWORD}"
+      TZ: "Europe/Berlin"
     ports:
-      - "${DASHBOARD_HTTP_PORT:-8080}:8080"
+      - "8080:8080"
     volumes:
       - luma-dashboard-data:/data
     healthcheck:
